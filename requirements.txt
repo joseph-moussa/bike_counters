@@ -7,6 +7,5 @@ scikit-learn
 folium
 ramp-workflow
 streamlit
-math
 collections
 altair
