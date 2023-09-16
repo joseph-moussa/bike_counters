@@ -12,18 +12,8 @@ test_data = pd.read_parquet("data/test.parquet")
 
 # Function to visualize data on a map
 def visualize_data_on_map(data):
-    m = folium.Map(location=data[["latitude", "longitude"]].mean(axis=0), zoom_start=13)
-
-    for _, row in (
-        data[["counter_name", "latitude", "longitude"]]
-        .drop_duplicates("counter_name")
-        .iterrows()
-    ):
-        folium.Marker(
-            row[["latitude", "longitude"]].values.tolist(), popup=row["counter_name"]
-        ).add_to(m)
-    
-    return m
+    counter_locations = data.groupby("counter_name")[["latitude", "longitude"]].mean().reset_index()
+    st.map(counter_locations)
 
 # Function to aggregate data and plot
 def aggregate_and_plot_data(data):
@@ -103,14 +93,14 @@ def main():
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
     st.header("Map Visualization of the data")
-    map_data = visualize_data_on_map(train_data)
-    st.write("Map of Counter Locations in Paris")
-    st.write(map_data)
+    st.write("#### Map of Counter Locations in Paris")
+    visualize_data_on_map(train_data)
 
-    st.header("Aggregate Data and Plot")
+    st.header("Smoothed Temporal Distribution of the most frequented bike counter")
+    st.write(" #### Data Aggregated by Week")
     aggregate_and_plot_data(train_data)
 
-    st.header("Distribution of the Target Variable")
+    st.header("Distribution of the Target Variable - Bike Count")
     display_target_variable_distribution(train_data)
     st.write("If we look at the distribution of the target variable, we can see that it is skewed and non normal. \
              A loss such as the MSE would not be appropriate since it is desined for normal error distributions. \
