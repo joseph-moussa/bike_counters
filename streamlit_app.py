@@ -4,13 +4,10 @@ import numpy as np
 import folium
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.linear_model import Ridge
 
 # Data can be downloaded from the links in the readme file
 train_data = pd.read_parquet("data/train.parquet")
-train_data.drop(columns=["SC"], inplace=True)
 test_data = pd.read_parquet("data/test.parquet")
-test_data.drop(columns=["SC"], inplace=True)
 
 # Function to visualize data on a map
 def visualize_data_on_map(data):
@@ -91,7 +88,7 @@ def visualize_predictions(regressor, X_test, y_test, counter_name = "Totem 73 bo
 # Streamlit app
 def main():
     # Add title
-    st.title('Analysis of the Bike traffic in Paris')
+    st.title('Data Analysis of the Bike traffic in Paris')
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
     st.header("Map Visualization of the data")
@@ -111,18 +108,7 @@ def main():
     st.header("Logarithmic Transformation")
     display_logarithmic_transformation(train_data)
 
-    st.header("Applying Simple Linear Regression")
-    X_train, y_train = encode_dates(train_data), train_data["log_bike_count"]
-    X_test, y_test = encode_dates(test_data), test_data["log_bike_count"] 
-    X_train[["site_id", "counter_id"]] = X_train["counter_id"].str.split("-", expand=True)
-    X_test[["site_id", "counter_id"]] = X_test["counter_id"].str.split("-", expand=True)
-    regressor = Ridge()
-    regressor.fit(X_train, y_train)
-
-    st.write('Bike count predictions for one specific counter: Totem 73 boulevard de Sébastopol S-N')
-    visualize_predictions(regressor, X_test, y_test)
-
-    st.write('#### Interpretation:')
+    st.write('This transformation would enable the application of machine learning learning models such as linear regression.')
 
 if __name__ == '__main__':
     main()
