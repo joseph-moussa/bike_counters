@@ -98,7 +98,7 @@ def main():
     
     if st.checkbox('Show Test Data'):
         st.header('Raw Test Data')
-        st.write(test)
+        st.write(test_data)
     
     st.write("The dataset was collected with cyclist counters installed by Paris city council in multiple locations. It contains hourly information about cyclist traffic.")
     
