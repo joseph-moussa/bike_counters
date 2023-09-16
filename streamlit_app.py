@@ -5,8 +5,12 @@ import folium
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Data can be downloaded from the links in 
-data = pd.read_parquet('train.parquet')
+# Data can be downloaded from the links in the readme file
+data_url = "https://github.com/ramp-kits/bike_counters/releases/download/v0.1.0/train.parquet"
+response = requests.get(data_url)
+parquet_content = response.content
+parquet_io = BytesIO(parquet_content)
+data = pd.read_parquet(parquet_io)
 
 # Function to visualize data on a map
 def visualize_data_on_map(data):
