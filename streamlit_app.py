@@ -91,6 +91,17 @@ def main():
     st.title('Data Analysis of the Bike traffic in Paris')
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
+    # Add an option to show the data
+    if st.checkbox('Show Train Data'):
+        st.header('Raw Training Data')
+        st.write(train_data)
+    
+    if st.checkbox('Show Test Data'):
+        st.header('Raw Test Data')
+        st.write(test)
+    
+    st.write("The dataset was collected with cyclist counters installed by Paris city council in multiple locations. It contains hourly information about cyclist traffic.")
+    
     st.header("Map Visualization of the data")
     st.write("#### Map of Counter Locations in Paris")
     visualize_data_on_map(train_data)
