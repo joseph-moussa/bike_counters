@@ -8,9 +8,9 @@ from sklearn.linear_model import Ridge
 
 # Data can be downloaded from the links in the readme file
 train_data = pd.read_parquet("data/train.parquet")
-train_data.drop(columns=["SC'], inplace=True)
+train_data.drop(columns=["SC"], inplace=True)
 test_data = pd.read_parquet("data/test.parquet")
-test_data.drop(columns=["SC'], inplace=True)
+test_data.drop(columns=["SC"], inplace=True)
 
 # Function to visualize data on a map
 def visualize_data_on_map(data):
