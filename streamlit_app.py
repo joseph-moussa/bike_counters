@@ -122,7 +122,7 @@ def main():
     st.write('Bike count predictions for one specific counter: Totem 73 boulevard de Sébastopol S-N')
     visualize_predictions(regressor, X_test, y_test)
 
-    st.write('#### Interpretation:)
+    st.write('#### Interpretation:')
 
 if __name__ == '__main__':
     main()
