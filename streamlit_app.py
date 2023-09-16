@@ -6,7 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Data can be downloaded from the links in the readme file
-data = pd.read_parquet("C:/Users/Joseph Moussa/Desktop/X/4A/Tooling for data scientist/streamlit/bike-counters/train.parquet")
+data = pd.read_parquet("train.parquet")
 '''
 data_url = "https://github.com/ramp-kits/bike_counters/releases/download/v0.1.0/train.parquet"
 response = requests.get(data_url)
