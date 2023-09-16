@@ -1,26 +1,77 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
 import streamlit as st
+import pandas as pd
+import numpy as np
+import folium
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-with st.echo(code_location='below'):
-   total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-   num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+# Data can be downloaded from the links in 
+data = pd.read_parquet('train.parquet')
 
-   Point = namedtuple('Point', 'x y')
-   data = []
+# Function to visualize data on a map
+def visualize_data_on_map(data):
+    m = folium.Map(location=data[["latitude", "longitude"]].mean(axis=0), zoom_start=13)
 
-   points_per_turn = total_points / num_turns
+    for _, row in (
+        data[["counter_name", "latitude", "longitude"]]
+        .drop_duplicates("counter_name")
+        .iterrows()
+    ):
+        folium.Marker(
+            row[["latitude", "longitude"]].values.tolist(), popup=row["counter_name"]
+        ).add_to(m)
+    
+    return m
 
-   for curr_point_num in range(total_points):
-      curr_turn, i = divmod(curr_point_num, points_per_turn)
-      angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-      radius = curr_point_num / total_points
-      x = radius * math.cos(angle)
-      y = radius * math.sin(angle)
-      data.append(Point(x, y))
+# Function to aggregate data and plot
+def aggregate_and_plot_data(data):
+    mask = data["counter_name"] == "Totem 73 boulevard de Sébastopol S-N"
+    aggregated_data = data[mask].groupby(pd.Grouper(freq="1w", key="date"))[["bike_count"]].sum()
+    
+    # Plot the aggregated data
+    plt.figure(figsize=(10, 6))
+    plt.plot(aggregated_data.index, aggregated_data["bike_count"])
+    plt.xlabel("Date")
+    plt.ylabel("Total Bike Count")
+    plt.title("Bike Count Over Time")
+    st.pyplot()
 
-   st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-      .mark_circle(color='#0068c9', opacity=0.5)
-      .encode(x='x:Q', y='y:Q'))
+# Function to display the distribution of the target variable
+def display_target_variable_distribution(data):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.histplot(data, x="bike_count", kde=True, bins=50, ax=ax)
+    plt.xlabel("Bike Count")
+    plt.ylabel("Frequency")
+    plt.title("Distribution of Bike Count")
+    st.pyplot()
+
+# Function to display the distribution after logarithmic transformation
+def display_logarithmic_transformation(data):
+    data["log_bike_count"] = data["bike_count"].apply(lambda x: max(1, x)).apply(lambda x: np.log(1 + x))
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.histplot(data, x="log_bike_count", kde=True, bins=50, ax=ax)
+    plt.xlabel("Log(Bike Count)")
+    plt.ylabel("Frequency")
+    plt.title("Distribution of Logarithm of Bike Count")
+    st.pyplot()
+
+# Streamlit app
+def main():
+    st.title("Data Visualization with Streamlit")
+
+    st.header("Visualize Data on a Map")
+    map_data = visualize_data_on_map(data)
+    st.write("Map of Counter Locations")
+    st.write(map_data)
+
+    st.header("Aggregate Data and Plot")
+    aggregate_and_plot_data(data)
+
+    st.header("Distribution of the Target Variable")
+    display_target_variable_distribution(data)
+
+    st.header("Logarithmic Transformation")
+    display_logarithmic_transformation(data)
+
+if __name__ == '__main__':
+    main()
