@@ -6,7 +6,9 @@
 - [Overview of the project](#overview)
 - [Dataset Download](#download)
 - [Data Analysis](#eda)
+- [Estimator](#estimator)
 - [Installing Requirements](#requirements)
+- [Lauching the web app](#webapp)
 - [To go further](#further)
 
 ## Overview of the project
@@ -14,7 +16,7 @@
 This project aims to study and predict bike traffic in Paris and display the results in a web app.  
 The goal is to understand bike traffic patterns to optimize the development of Paris' infrastructure.
 The study of historical data provides very useful insights about the distribution and the spread of the datapoints.
-The data analysis part is visualized using Streamlit. The prediction part is done using different regressors, such as tree-based regressor and Ridge.
+The data analysis part is visualized using Streamlit. The prediction part is done using different regressors, such as tree-based regressors and Ridge.
 
 ### Dataset Download
 
@@ -27,6 +29,10 @@ The parquet files are already in the data folder. You can also download the trai
 An exploratory data analysis is conducted (analysis of distributions, temporal trends, geographical locations) to extact useful insights from the data.
 It is the first step towards understanding the underlying trends in the data and identifying the transforms that need to be applied to the inputs of the predictive models.
 For instance, one should check the quasi-compatibility between the input distribution and gaussian based models such as linear regression.
+
+### Estimator
+
+The estimator.py file in the submissions/my_submission/ directory provides details about the preprocessing and model fitting steps of the project.
 
 ### Installing Requirements
 
@@ -42,6 +48,9 @@ conda create -n bikes-ramp python=3.9
 conda activate bikes-ramp
 pip install -r requirements.txt
 ```
+
+### Usage
+The Dockerfile contains instructions including cloning this repository. After building an image, you can run a container for the image and see the web app.
 
 ### To go further
 
