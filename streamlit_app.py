@@ -46,28 +46,6 @@ def display_logarithmic_transformation(data):
     plt.title("Distribution of Logarithm of Bike Count")
     st.pyplot()
 
-# Date encoding function:
-def encode_dates(X):
-    '''
-    Encode date-related features from a DataFrame into separate columns.
-
-    Parameters:
-        X (DataFrame): The input DataFrame containing a 'date' column to be encoded.
-
-    Returns:
-        DataFrame: A modified DataFrame with additional columns for year, month, day, weekday, and hour.
-    '''
-    X = X.copy()  # modify a copy of X
-    # Encode the date information from the DateOfDeparture columns
-    X.loc[:, "year"] = X["date"].dt.year
-    X.loc[:, "month"] = X["date"].dt.month
-    X.loc[:, "day"] = X["date"].dt.day
-    X.loc[:, "weekday"] = X["date"].dt.weekday
-    X.loc[:, "hour"] = X["date"].dt.hour
-
-    # Finally we can drop the original columns from the dataframe
-    return X.drop(columns=["date"])
-
 # Function to visualize predictions
 def visualize_predictions(regressor, X_test, y_test, counter_name = "Totem 73 boulevard de Sébastopol S-N", start_date = "2021/09/01", end_date = "2021/09/08"):
     mask = (
